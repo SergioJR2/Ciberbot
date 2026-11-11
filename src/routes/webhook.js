@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { env } from '../config/env.js';
 import { logger } from '../utils/logger.js';
+import { enviarMensajeTexto } from '../services/whatsapp.js';
 
 const webhookRouter = Router();
 
@@ -40,6 +41,49 @@ function validarFirmaWebhook(request, response, next) {
   return next();
 }
 
+function procesarMensajesEntrantes(entradas) {
+  for (const entrada of entradas) {
+    const cambios = Array.isArray(entrada?.changes) ? entrada.changes : [];
+
+    for (const cambio of cambios) {
+      if (cambio?.field !== 'messages') {
+        continue;
+      }
+
+      const mensajes = Array.isArray(cambio.value?.messages) ? cambio.value.messages : [];
+
+      for (const mensaje of mensajes) {
+        logger.info(
+          {
+            whatsappMessageId: mensaje?.id,
+            tipo: mensaje?.type,
+          },
+          'Mensaje entrante de WhatsApp recibido.',
+        );
+
+        if (
+          mensaje?.type !== 'text' ||
+          typeof mensaje.from !== 'string' ||
+          typeof mensaje.text?.body !== 'string' ||
+          mensaje.text.body.trim().length === 0
+        ) {
+          continue;
+        }
+
+        enviarMensajeTexto(mensaje.from, mensaje.text.body).catch((error) => {
+          logger.error(
+            {
+              whatsappMessageId: mensaje.id,
+              error: error instanceof Error ? error.message : String(error),
+            },
+            'No se pudo responder al mensaje de WhatsApp.',
+          );
+        });
+      }
+    }
+  }
+}
+
 webhookRouter.get('/', (request, response) => {
   const modo = request.query['hub.mode'];
   const tokenVerificacion = request.query['hub.verify_token'];
@@ -69,27 +113,7 @@ webhookRouter.post(
   (request, response) => {
     const entradas = Array.isArray(request.body?.entry) ? request.body.entry : [];
 
-    for (const entrada of entradas) {
-      const cambios = Array.isArray(entrada?.changes) ? entrada.changes : [];
-
-      for (const cambio of cambios) {
-        if (cambio?.field !== 'messages') {
-          continue;
-        }
-
-        const mensajes = Array.isArray(cambio.value?.messages) ? cambio.value.messages : [];
-
-        for (const mensaje of mensajes) {
-          logger.info(
-            {
-              whatsappMessageId: mensaje?.id,
-              tipo: mensaje?.type,
-            },
-            'Mensaje entrante de WhatsApp recibido.',
-          );
-        }
-      }
-    }
+    setImmediate(() => procesarMensajesEntrantes(entradas));
 
     return response.sendStatus(200);
   },
