@@ -1,4 +1,5 @@
 import express from 'express';
+import webhookRouter from './routes/webhook.js';
 
 const app = express();
 
@@ -10,5 +11,7 @@ app.get('/health', (_request, response) => {
     servicio: 'ciberbot',
   });
 });
+
+app.use('/webhook', webhookRouter);
 
 export default app;
