@@ -26,7 +26,7 @@ La recepción de pedidos, el procesamiento de archivos, los avisos al empleado y
 
 ## Requisitos
 
-- Node.js 20 o superior.
+- Node.js 20.19 o superior dentro de la serie 20, 22.13 o superior dentro de la serie 22, o 24 o superior.
 - npm, incluido con Node.js.
 
 ## Ejecutar en Windows con PowerShell
