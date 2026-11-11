@@ -1,0 +1,1 @@
+console.log('Ciberbot preparado. El servidor se agregará en el commit 7.');
