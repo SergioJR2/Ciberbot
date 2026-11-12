@@ -20,9 +20,11 @@ Estas funciones forman parte del plan del proyecto; todavía no están implement
 
 ## Estado actual
 
-El repositorio está preparado como proyecto Node.js con módulos ES. Por ahora, el programa solo imprime un mensaje de inicio: todavía no levanta un servidor ni se conecta a WhatsApp.
+El proyecto levanta un servidor Express con una ruta de salud y un webhook de Meta. El webhook verifica la firma de las solicitudes, registra metadatos de mensajes entrantes y responde con un eco a los mensajes de texto usando WhatsApp Cloud API.
 
-La recepción de pedidos, el procesamiento de archivos, los avisos al empleado y el panel web se incorporarán en commits posteriores.
+La respuesta eco sirve para probar la integración; todavía no procesa pedidos. No conectes un número de clientes reales mientras esa respuesta esté activa.
+
+Consulta [la guía de configuración de Meta y ngrok](docs/configuracion-webhook-whatsapp.md) para probar el webhook localmente desde Windows.
 
 ## Requisitos
 
