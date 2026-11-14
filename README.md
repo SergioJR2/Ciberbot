@@ -18,6 +18,16 @@ Los resultados automáticos deben ser revisados por el empleado antes de entrega
 
 Estas funciones forman parte del plan del proyecto; todavía no están implementadas.
 
+## Avances realizados
+
+- Servidor Express con una ruta de salud.
+- Webhook de Meta con verificación.
+- Validación de la firma de las solicitudes entrantes.
+- Registro de metadatos de los mensajes recibidos.
+- Respuesta eco a mensajes de texto mediante WhatsApp Cloud API.
+- Guía de configuración de Meta y ngrok para Windows.
+- Scripts de npm para iniciar, desarrollar y probar el proyecto.
+
 ## Estado actual
 
 El proyecto levanta un servidor Express con una ruta de salud y un webhook de Meta. El webhook verifica la firma de las solicitudes, registra metadatos de mensajes entrantes y responde con un eco a los mensajes de texto usando WhatsApp Cloud API.
@@ -60,5 +70,3 @@ Ejecuta el test runner nativo de Node.js:
 ```powershell
 npm test
 ```
-
-Todavía no hay pruebas automatizadas, así que el resultado actual esperado es cero pruebas fallidas y cero pruebas ejecutadas.
