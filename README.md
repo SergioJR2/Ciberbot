@@ -36,6 +36,14 @@ La respuesta eco sirve para probar la integración; todavía no procesa pedidos.
 
 Consulta [la guía de configuración de Meta y ngrok](docs/configuracion-webhook-whatsapp.md) para probar el webhook localmente desde Windows.
 
+## Flujo actual de un mensaje
+
+1. Una persona envía un mensaje de texto por WhatsApp.
+2. Meta envía la solicitud al webhook del proyecto.
+3. El webhook verifica la firma de la solicitud.
+4. Se registran los metadatos del mensaje recibido.
+5. El proyecto responde con un eco del mismo texto usando WhatsApp Cloud API.
+
 ## Requisitos
 
 - Node.js 20.19 o superior dentro de la serie 20, 22.13 o superior dentro de la serie 22, o 24 o superior.
